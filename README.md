@@ -220,16 +220,6 @@ NEXT_PUBLIC_BACKEND_URL="http://localhost:8000"
 
 ---
 
-## 📸 Proof & Screenshots
-
-Here are the verification screenshots of the live system:
-
-| Firestore Document Schema | Saved Reports Dashboard Archive |
-| :---: | :---: |
-| ![Firestore Schema](docs/screenshots/firestore_schema_proof.png) | ![Saved Reports Workspace](docs/screenshots/saved_reports_dashboard.png) |
-
----
-
 ## 🛣️ Future Enhancements
 
 - [ ] Multi-document cross-repository reasoning.
