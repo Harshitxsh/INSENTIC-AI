@@ -11,7 +11,7 @@
 
 *Built with ❤️ by **Team INSIDIOUS 🚀***
 
-A next-generation Enterprise Agentic RAG Platform designed to ingest corporate documents, perform semantic retrieval, and orchestrate a multi-agent workflow for governance validation, compliance analysis, risk assessment, and executive intelligence reporting.
+A next-generation Enterprise Multi-Agent Governance Intelligence Platform designed to ingest multi-format corporate documents, extract text via OCR, process handwritten context, and orchestrate a multi-agent workflow for governance validation, compliance auditing, risk assessment, and boardroom-ready executive intelligence reporting.
 
 </div>
 
@@ -26,15 +26,15 @@ A next-generation Enterprise Agentic RAG Platform designed to ingest corporate d
 
 ## 🎯 Problem Statement
 
-Modern enterprises struggle to quickly extract accurate, compliant, and actionable intelligence from vast repositories of corporate documents, policies, and guidelines. Traditional search systems lack deep semantic understanding, reasoning capabilities, and governance guardrails, leading to hallucinated answers, compliance risks, and inefficient executive decision-making.
+Modern enterprises struggle to quickly extract accurate, compliant, and actionable intelligence from vast repositories of corporate documents, scanned images, and handwritten policies. Simple RAG chatbots and PDF Q&A tools lack the deep semantic understanding, reasoning capabilities, and governance guardrails required, leading to hallucinated answers, compliance risks, and inefficient executive decision-making.
 
-There is a critical need for an **Enterprise Agentic RAG Platform** capable of ingesting secure corporate knowledge, performing explainable retrieval, and applying rigorous governance validation to generate boardroom-ready executive intelligence reports.
+There is a critical need for an **Enterprise Multi-Agent Governance Intelligence Platform** capable of multi-format document ingestion, explainable semantic retrieval, and rigorous governance validation to generate source-grounded executive intelligence reports.
 
 ---
 
 ## 💡 Solution Overview
 
-**INSENTIC AI** solves this by orchestrating a deterministic **Multi-Agent RAG System**. Powered by Gemini 1.5 Pro, LangChain, and ChromaDB, the platform dynamically parses enterprise knowledge bases, deploys specialized agents for context compression and deep reasoning, and actively audits outputs against strict compliance policies. The result is a highly reliable, mathematically scored, and explainable executive briefing system built on a secure Enterprise Intelligence Operating System dashboard.
+**INSENTIC AI** is not a simple RAG chatbot—it is an advanced **Enterprise Multi-Agent Governance Intelligence Platform**. Powered by Gemini 1.5 Pro, LangChain, and ChromaDB, the platform dynamically parses hybrid enterprise knowledge bases (including OCR extraction from scanned and handwritten documents), deploys specialized agents for context compression and deep reasoning, and actively audits outputs against strict compliance policies. The result is a highly reliable, mathematically scored, and explainable executive briefing system built on a secure Enterprise Intelligence Operating System dashboard.
 
 ---
 
@@ -77,16 +77,16 @@ Our architecture employs a sequential multi-agent pipeline to ensure hallucinati
 
 ## ✨ Key Features
 
-- **Enterprise Document Upload & Knowledge Ingestion:** Securely process and index PDF, DOCX, and CSV files.
-- **Intelligent Chunking & Embedding Pipeline:** Context-aware document splitting for optimal semantic search.
-- **ChromaDB Semantic Retrieval:** High-performance vector-based information retrieval.
-- **Governance Validation Layer:** Automated hallucination prevention and contradiction checking.
-- **Compliance Audit Engine:** Strict enforcement of internal corporate policies and security standards.
-- **Risk Intelligence Dashboard:** Real-time threat anomaly scoring and departmental vulnerability heatmaps.
-- **Executive Brief Generation:** Automated synthesis of boardroom-ready strategy reports.
-- **RAG Inspector:** Deep observability into source chunk lineage, semantic trace parameters, and match rankings.
-- **Explainable Reasoning Path:** Transparent visualization of the LLM's step-by-step decision-making process.
-- **Confidence Analysis & Intelligence Radar:** Multi-dimensional scoring (Security, Compliance, Governance, Operations, Risk, Reliability).
+- **Multi-Format Document Ingestion:** Securely process and index PDF, DOCX, CSV, scanned PDFs, and image-based documents.
+- **Advanced OCR & Handwritten Extraction:** Built-in hybrid document parsing supporting OCR-based text extraction and handwritten document understanding.
+- **Knowledge Base Creation:** Context-aware document splitting for optimal semantic search.
+- **Semantic Retrieval with ChromaDB:** High-performance vector-based information retrieval.
+- **Multi-Agent Reasoning:** Specialized agents for retrieval, compression, reasoning, and synthesis.
+- **Governance Validation & Compliance Auditing:** Automated hallucination prevention, contradiction checking, and strict enforcement of corporate policies.
+- **Risk Intelligence Analysis:** Real-time threat anomaly scoring, confidence analysis, and intelligence radar visualization.
+- **Executive Intelligence Brief Generation:** Automated synthesis of boardroom-ready strategy reports.
+- **Explainable & Source-Grounded Responses:** Transparent visualization of the LLM's step-by-step decision-making process and citation-backed assertions.
+- **Enterprise Decision Support:** Complete multi-module dashboard tailored for executive observability.
 
 ---
 
@@ -227,14 +227,18 @@ NEXT_PUBLIC_BACKEND_URL="http://localhost:8000"
 
 ---
 
-## 🛣️ Future Roadmap
+## 🛣️ Future Enhancements
 
-- [ ] Integration with advanced enterprise SSO (Okta, Azure AD).
-- [ ] Support for OCR-based ingestion of scanned images and handwritten notes.
-- [ ] Export briefings directly to branded PDF and DOCX formats.
-- [ ] Real-time integration with external APIs (e.g., Jira, ServiceNow) for automated risk ticketing.
-- [ ] Expanded LLM support (Anthropic Claude, local Llama 3 models).
-
+- [ ] Multi-document cross-repository reasoning.
+- [ ] Real-time enterprise data connectors (Google Drive, SharePoint, Confluence, Notion).
+- [ ] Enterprise RBAC, user management, and collaborative multi-user workspaces.
+- [ ] Continuous knowledge synchronization pipelines and agent memory for long-term organizational context.
+- [ ] Automated compliance monitoring and regulatory framework packs (ISO 27001, SOC2, HIPAA, GDPR).
+- [ ] Enterprise workflow integrations and advanced risk prediction engine.
+- [ ] Human-in-the-loop governance approval workflows and executive dashboard analytics.
+- [ ] Knowledge graph generation and multi-modal intelligence fusion.
+- [ ] On-premise enterprise deployment support and autonomous governance recommendation engine.
+- [ ] Agent performance observability.
 ---
 
 ## 👨‍💻 Team
@@ -242,8 +246,8 @@ NEXT_PUBLIC_BACKEND_URL="http://localhost:8000"
 Developed for the Agentic AI Hackathon by **Team INSIDIOUS 🚀**
 
 - **Harshit Sharma**
-- **Dhruv**
 - **Arjun Katiyar**
+- **Dhruv**
 
 ---
 
