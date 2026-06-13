@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { auth } from "@/lib/firebase";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import { 
   Terminal, Send, ShieldAlert, Cpu, Database, CheckSquare, Sparkles, 
   RefreshCw, BarChart2, ShieldX, Clock, Plus, FileText, FolderPlus, 
@@ -10,7 +12,7 @@ import {
   LayoutGrid, Award, AlertOctagon, Scale, Settings, List, ShieldCheck, 
   FileCheck, Layers, Compass, Fingerprint, FolderOpen, ToggleLeft, 
   Server, Menu, HelpCircle, HardDrive, CheckCircle2, ChevronLeft, Play, Download, Copy, Check,
-  Shield, Activity, Search, LayoutDashboard, Workflow, SearchCheck, ClipboardCheck, AlertTriangle
+  Shield, Activity, Search, LayoutDashboard, Workflow, SearchCheck, ClipboardCheck, AlertTriangle, LogOut
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import OrchestrationTimeline from "./OrchestrationTimeline";
@@ -18,6 +20,8 @@ import FinalIntelligenceWorkspace from "./FinalIntelligenceWorkspace";
 import GovernancePanel from "./GovernancePanel";
 import RetrievalInspector from "./RetrievalInspector";
 import DashboardHeader from "./DashboardHeader";
+import MyReportsWorkspace from "./MyReportsWorkspace";
+import MyDocumentsWorkspace from "./MyDocumentsWorkspace";
 
 interface PresetQuery {
   id: string;
@@ -70,6 +74,19 @@ interface AgentConsoleProps {
 }
 
 export default function AgentConsole({ onDocsIngested = () => {}, documentCount }: AgentConsoleProps) {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      router.push("/login");
+      toast.success("Successfully signed out of session.");
+    } catch (e: any) {
+      console.error("Logout failed:", e);
+      toast.error("Logout failed: " + e.message);
+    }
+  };
+
   // Navigation & Workspace states
   const [activeWorkspace, setActiveWorkspace] = useState<string>("command_center");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
@@ -212,7 +229,10 @@ export default function AgentConsole({ onDocsIngested = () => {}, documentCount 
   const fetchLibrary = async () => {
     if (!sessionId) return;
     try {
-      const res = await axios.get(`${API_URL}/api/documents?session_id=${sessionId}`);
+      const token = await auth.currentUser?.getIdToken();
+      const res = await axios.get(`${API_URL}/api/documents?session_id=${sessionId}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
       if (res.data?.status === "success") {
         setIngestedFiles(res.data.documents);
       }
@@ -277,9 +297,12 @@ export default function AgentConsole({ onDocsIngested = () => {}, documentCount 
 
     try {
       // 1. Fetch complete API payload immediately (high-performance execution)
+      const token = await auth.currentUser?.getIdToken();
       const response = await axios.post(`${API_URL}/api/orchestrate`, {
         query: query,
         session_id: sessionId
+      }, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
 
       const payload = response.data;
@@ -466,7 +489,10 @@ export default function AgentConsole({ onDocsIngested = () => {}, documentCount 
   const handleResetDB = async () => {
     try {
       toast.loading("Reloading ChromaDB demo data...");
-      const response = await axios.get(`${API_URL}/api/documents`);
+      const token = await auth.currentUser?.getIdToken();
+      const response = await axios.get(`${API_URL}/api/documents`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
       if (response.data.status === "success") {
         onDocsIngested();
         fetchLibrary();
@@ -763,8 +789,12 @@ export default function AgentConsole({ onDocsIngested = () => {}, documentCount 
     
     formData.append("doc_type", type);
 
+    const token = await auth.currentUser?.getIdToken();
     return axios.post(`${API_URL}/api/documents/upload`, formData, {
-      headers: { "Content-Type": "multipart/form-data" }
+      headers: { 
+        "Content-Type": "multipart/form-data",
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      }
     });
   };
 
@@ -2733,6 +2763,36 @@ INSENTIC AI Platform Automated Consensus Engine
           </div>
 
         </div>
+
+        {/* Sidebar Footer User Controls */}
+        <div className="p-3 border-t border-white/5 bg-black/20 text-xs flex flex-col gap-2">
+          {!isSidebarCollapsed ? (
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-col">
+                <span className="text-[9px] text-slate-500 uppercase tracking-wider font-mono">User Session</span>
+                <span className="text-slate-300 font-medium truncate max-w-[230px]" title={auth.currentUser?.email || ""}>
+                  {auth.currentUser?.email || "Guest Session"}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="w-full text-center py-2 px-3 rounded-lg border border-red-500/30 bg-red-950/20 text-red-400 hover:bg-red-900/30 hover:text-white transition duration-200 cursor-pointer text-[10px] font-black uppercase tracking-wider"
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="flex items-center justify-center p-2.5 rounded-lg border border-red-500/20 bg-red-950/10 text-red-400 hover:bg-red-900/30 hover:text-white transition cursor-pointer"
+              title="Sign Out"
+            >
+              <LogOut className="h-4.5 w-4.5" />
+            </button>
+          )}
+        </div>
       </motion.aside>
 
       {/* RIGHT side container: Header + Main scrollable Workspace */}
@@ -2752,7 +2812,7 @@ INSENTIC AI Platform Automated Consensus Engine
           {activeWorkspace === "rag_inspector" && renderRAGInspectorWorkspace()}
           {activeWorkspace === "governance_guard" && renderGovernanceGuardWorkspace()}
           {activeWorkspace === "risk_intelligence" && renderRiskIntelligenceWorkspace()}
-          {activeWorkspace === "reports" && renderReportsWorkspace()}
+          {activeWorkspace === "reports" && <MyReportsWorkspace />}
           {activeWorkspace === "settings" && renderSettingsWorkspace()}
         </main>
       </div>
