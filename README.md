@@ -240,6 +240,7 @@ Developed for the Agentic AI Hackathon by **Team INSIDIOUS 🚀**
 
 - **Harshit Sharma**
 - **Dhruv**
+- **Arjun Katiyar**
 
 ---
 
