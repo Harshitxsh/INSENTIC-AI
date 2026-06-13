@@ -87,6 +87,12 @@ Our architecture employs a sequential multi-agent pipeline to ensure hallucinati
 - **Executive Intelligence Brief Generation:** Automated synthesis of boardroom-ready strategy reports.
 - **Explainable & Source-Grounded Responses:** Transparent visualization of the LLM's step-by-step decision-making process and citation-backed assertions.
 - **Enterprise Decision Support:** Complete multi-module dashboard tailored for executive observability.
+- **Firebase Auth & Session Management:** Secure email/password authentication with persistent user sessions across page refreshes and route protection.
+- **Sleek Session Controls UX:** A sidebar-mounted session indicator showing the user email and a secure "Sign Out" control.
+- **Firestore Report Persistence:** Automated serialization of RAG briefings, reasoning logs, confidence metrics, and governance results into Google Firestore under user ownership.
+- **Client-Side Sorted Reports Archive:** A dedicated workspace that queries saved briefings using client-side sorting to eliminate composite index bottlenecks.
+- **Instant Tab Reloads:** Explore historical reports (Executive Briefing, Reasoning, Governance Guard, RAG Inspector, Confidence Analysis) directly from database documents without repeating AI workflows.
+- **Granular Database Security Rules:** Production-ready Firestore Security Rules restricting document access to the authenticated owner (`userId == request.auth.uid`).
 
 ---
 
@@ -208,22 +214,19 @@ NEXT_PUBLIC_BACKEND_URL="http://localhost:8000"
 ## ☁️ Deployment Architecture
 
 - **Backend Containerization:** The FastAPI application is containerized using Docker and pushed to Google Container Registry (GCR) or Artifact Registry.
-- **Backend Hosting:** Deployed on **Google Cloud Run** for serverless, autoscaling execution.
+- **Backend Hosting:** Deployed on **Google Cloud Run** for serverless, autoscaling execution with custom IAM service account permissions.
 - **Frontend Hosting:** The Next.js application is statically exported and deployed securely via **Firebase Hosting**.
+- **Firestore Security Rules:** Managed and deployed to Firestore using the Firebase CLI, enforcing strict document ownership and locking down public/anonymous access.
 
 ---
 
-## 📸 Screenshots
+## 📸 Proof & Screenshots
 
-*(Replace placeholder links with actual image paths before final submission)*
+Here are the verification screenshots of the live system:
 
-| Command Center | Risk Intelligence |
+| Firestore Document Schema | Saved Reports Dashboard Archive |
 | :---: | :---: |
-| ![Command Center](placeholder-command-center.png) | ![Risk Intelligence](placeholder-risk.png) |
-
-| RAG Inspector | Generated Briefing |
-| :---: | :---: |
-| ![RAG Inspector](placeholder-inspector.png) | ![Executive Briefing](placeholder-briefing.png) |
+| ![Firestore Schema](docs/screenshots/firestore_schema_proof.png) | ![Saved Reports Workspace](docs/screenshots/saved_reports_dashboard.png) |
 
 ---
 
@@ -246,7 +249,6 @@ NEXT_PUBLIC_BACKEND_URL="http://localhost:8000"
 Developed for the Agentic AI Hackathon by **Team INSIDIOUS 🚀**
 
 - **Harshit Sharma**
-- **Arjun Katiyar**
 - **Dhruv**
 
 ---
