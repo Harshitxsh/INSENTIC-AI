@@ -242,7 +242,7 @@ NEXT_PUBLIC_BACKEND_URL="http://localhost:8000"
 Developed for the Agentic AI Hackathon by **Team INSIDIOUS 🚀**
 
 - **Harshit Sharma**
-- **Dhruv Varshney**
+- **Dhruv**
 - **Arjun Katiyar**
 
 ---
