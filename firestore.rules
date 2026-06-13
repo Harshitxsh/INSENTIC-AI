@@ -1,0 +1,40 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default rule: block all access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Users can read/write only their own user document
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Users can read/write only their own reports (supporting both userId and ownerUid)
+    match /reports/{reportId} {
+      allow read, update, delete: if request.auth != null && (
+        resource.data.userId == request.auth.uid || 
+        resource.data.ownerUid == request.auth.uid
+      );
+      allow create: if request.auth != null && (
+        request.resource.data.userId == request.auth.uid || 
+        request.resource.data.ownerUid == request.auth.uid
+      );
+    }
+    
+    // Users can read/write only their own documents (supporting both userId and ownerUid)
+    match /documents/{documentId} {
+      allow read, update, delete: if request.auth != null && (
+        resource.data.userId == request.auth.uid || 
+        resource.data.ownerUid == request.auth.uid
+      );
+      allow create: if request.auth != null && (
+        request.resource.data.userId == request.auth.uid || 
+        request.resource.data.ownerUid == request.auth.uid
+      );
+    }
+  }
+}
