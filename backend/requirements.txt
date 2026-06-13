@@ -19,3 +19,4 @@ openpyxl
 pymupdf
 pytesseract
 pdf2image
+firebase-admin

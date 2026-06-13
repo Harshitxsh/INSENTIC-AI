@@ -1,7 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from typing import Dict, Any, Optional
 from agents.workflow import compiled_graph
+from utils.auth import get_current_user
+from services.firestore import save_report
 
 router = APIRouter()
 
@@ -11,7 +13,7 @@ class OrchestrateRequest(BaseModel):
     options: Optional[Dict[str, Any]] = None
 
 @router.post("")
-def orchestrate_query(req: OrchestrateRequest):
+def orchestrate_query(req: OrchestrateRequest, user: dict = Depends(get_current_user)):
     """
     Triggers the compiled LangGraph pipeline to execute our multi-agent RAG workflow.
     Returns the complete trace log and synthesized governance analysis under session namespaces.
@@ -39,6 +41,33 @@ def orchestrate_query(req: OrchestrateRequest):
         # Invoke LangGraph synchronously
         final_state = compiled_graph.invoke(initial_state)
         
+        
+        # Save to Firestore if successful
+        if final_state.get("final_response") and "INSUFFICIENT_EVIDENCE" not in final_state.get("final_response", ""):
+            report_data = {
+                "ownerUid": user.get("uid"),
+                "userId": user.get("uid"),
+                "userEmail": user.get("email"),
+                "query": req.query,
+                "reportTitle": req.query[:50] + "..." if len(req.query) > 50 else req.query,
+                "reportContent": final_state.get("final_response"),
+                "finalReport": final_state.get("final_response"),
+                "confidenceAnalysis": {
+                    "factual_accuracy_score": final_state.get("confidence_score", 0.0),
+                    "risk_level": "UNKNOWN" # Computed locally
+                },
+                "confidenceMetrics": {
+                    "factual_accuracy_score": final_state.get("confidence_score", 0.0),
+                    "risk_level": "UNKNOWN"
+                },
+                "reasoningPath": final_state.get("reasoning_summary"),
+                "governanceGuard": final_state.get("governance_report", {}),
+                "ragInspector": final_state.get("documents", []),
+                "createdAt": datetime.datetime.utcnow().isoformat(),
+                "timestamp": datetime.datetime.utcnow().isoformat()
+            }
+            save_report(report_data)
+
         # Structure the API response
         return {
             "status": "success",

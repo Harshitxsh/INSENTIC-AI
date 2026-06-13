@@ -1,8 +1,10 @@
 import os
-from fastapi import APIRouter, HTTPException, UploadFile, File, Form
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Depends
 from typing import Optional, Dict, Any
 from services.vector_store import VectorStoreService
 from utils.document_parser import DocumentParser
+from utils.auth import get_current_user
+from services.firestore import save_document_metadata
 
 router = APIRouter()
 
@@ -11,7 +13,8 @@ async def upload_document(
     file: UploadFile = File(...),
     session_id: str = Form("default"),
     doc_type: Optional[str] = Form("Ingested File"),
-    folder_path: Optional[str] = Form("/")
+    folder_path: Optional[str] = Form("/"),
+    user: dict = Depends(get_current_user)
 ):
     """
     Dynamic Enterprise Ingestion Endpoint.
@@ -140,6 +143,20 @@ async def upload_document(
                 ]
             }
         
+        import datetime
+        doc_metadata = {
+            "ownerUid": user.get("uid"),
+            "userId": user.get("uid"),
+            "fileName": filename,
+            "fileType": ext,
+            "uploadDate": datetime.datetime.utcnow().isoformat(),
+            "ingestionStatus": "indexed",
+            "chunkCount": chunks_added,
+            "storageReference": f"local/{filename}",
+            "createdAt": datetime.datetime.utcnow().isoformat()
+        }
+        save_document_metadata(doc_metadata)
+
         # Return structured staged ingestion logs
         return {
             "status": "success",
@@ -177,7 +194,7 @@ async def upload_document(
         }
 
 @router.get("")
-def list_documents(session_id: str = "default"):
+def list_documents(session_id: str = "default", user: dict = Depends(get_current_user)):
     """
     Returns lists of all unique documents currently ingested matching the session namespace.
     """
